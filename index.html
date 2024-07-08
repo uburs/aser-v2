@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Captioning Prototype</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .caption-box {
+            width: 80%;
+            border: 2px solid #000;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .caption-text {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="caption-box" id="captionBox">
+        <!-- Captions will appear here -->
+    </div>
+
+    <script>
+        const captions = [
+            "Hello everyone! 😊",
+            "I am excited 😄 to share this with you.",
+            "The results are surprising 😲.",
+            "We should be cautious 😟 with our conclusions.",
+            "Thank you for your attention. 🙏"
+        ];
+
+        let captionIndex = 0;
+        const captionBox = document.getElementById('captionBox');
+
+        function displayCaption() {
+            if (captionIndex < captions.length) {
+                const captionText = document.createElement('span');
+                captionText.classList.add('caption-text');
+                captionText.textContent = captions[captionIndex];
+                captionBox.appendChild(captionText);
+                captionBox.appendChild(document.createElement('br'));
+                captionIndex++;
+                setTimeout(displayCaption, 2000);
+            }
+        }
+
+        displayCaption();
+    </script>
+</body>
+</html>
