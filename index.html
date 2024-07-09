@@ -83,13 +83,12 @@
             align-items: center;
             background: transparent; /* Make background transparent */
         }
-        .caption-overlay span {
-            display: block; /* Ensure text wraps within the container */
-            white-space: pre-wrap; /* Handle white spaces properly */
-            word-wrap: break-word; /* Break long words to fit the container */
-            width: 100%; /* Ensure text does not overflow */
-            padding: 0 10px; /* Add padding to prevent overflow */
+        .caption-container {
+            width: 90%; /* Ensure text is within the video width */
+            margin: 0 auto;
             box-sizing: border-box;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         .navigation {
             position: absolute;
@@ -127,8 +126,10 @@
 
     <div id="prototype3" class="container">
         <video id="video3" autoplay muted></video>
-        <div class="caption-overlay" id="captionBox3">
-            <!-- Captions will appear here -->
+        <div class="caption-overlay">
+            <div class="caption-container" id="captionBox3">
+                <!-- Captions will appear here -->
+            </div>
         </div>
     </div>
 
