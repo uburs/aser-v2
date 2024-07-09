@@ -195,10 +195,14 @@
             }
         }
 
-        displayCaption(document.getElementById('captionBox1'), captions1);
-        displayCaption(document.getElementById('captionBox2'), captions2);
-        displayFormattedCaption(document.getElementById('captionBox3'), captions3);
-        displayCaption(document.getElementById('captionBox4'), captions4);
+        function initializeCaptions() {
+            displayCaption(document.getElementById('captionBox1'), captions1);
+            displayCaption(document.getElementById('captionBox2'), captions2);
+            displayFormattedCaption(document.getElementById('captionBox3'), captions3);
+            displayCaption(document.getElementById('captionBox4'), captions4);
+        }
+
+        window.onload = initializeCaptions;
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -213,12 +217,14 @@
             containers[currentIndex].classList.remove('active');
             currentIndex = (currentIndex - 1 + containers.length) % containers.length;
             containers[currentIndex].classList.add('active');
+            initializeCaptions();
         }
 
         function showNext() {
             containers[currentIndex].classList.remove('active');
             currentIndex = (currentIndex + 1) % containers.length;
             containers[currentIndex].classList.add('active');
+            initializeCaptions();
         }
     </script>
 </body>
