@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Captioning and Video Prototype</title>
+    <title>Real-Time Captioning Prototypes</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -15,13 +15,18 @@
             margin: 0;
         }
         .container {
-            display: flex;
+            display: none;
+            position: relative;
             width: 90%;
             height: 80%;
             border: 2px solid #000;
             border-radius: 10px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .active {
+            display: flex;
         }
         .caption-box {
             width: 50%;
@@ -32,6 +37,12 @@
             border-right: 2px solid #000;
         }
         .video-box {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .avatar-box {
             width: 50%;
             display: flex;
             justify-content: center;
@@ -68,15 +79,41 @@
             font-size: 16px;
             cursor: pointer;
         }
+        .avatar {
+            width: 50%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="caption-box" id="captionBox">
+    <div id="prototype1" class="container active">
+        <div class="caption-box" id="captionBox1">
+            <!-- Captions will appear here -->
+        </div>
+    </div>
+
+    <div id="prototype2" class="container">
+        <div class="caption-box" id="captionBox2">
             <!-- Captions will appear here -->
         </div>
         <div class="video-box">
-            <video id="video" autoplay></video>
+            <video id="video2" autoplay></video>
+        </div>
+    </div>
+
+    <div id="prototype3" class="container">
+        <video id="video3" autoplay muted></video>
+        <div class="caption-overlay" id="captionBox3">
+            <!-- Captions will appear here -->
+        </div>
+    </div>
+
+    <div id="prototype4" class="container">
+        <div class="caption-box" id="captionBox4">
+            <!-- Captions will appear here -->
+        </div>
+        <div class="avatar-box">
+            <img src="avatar.png" alt="Avatar" class="avatar" id="avatar">
         </div>
     </div>
 
@@ -86,43 +123,62 @@
     </div>
 
     <script>
-        const captions = [
-            "Hello everyone! 😊",
-            "I am excited 😄 to share this with you.",
-            "The results are surprising 😲.",
-            "We should be cautious 😟 with our conclusions.",
-            "Thank you for your attention. 🙏"
+        const captions1 = [
+            "Hello everyone! 😊 Welcome to our session. I am excited 😄 to share this with you. The results are surprising 😲. We should be cautious 😟 with our conclusions. Thank you for your attention. 🙏"
+        ];
+        const captions2 = [
+            "Welcome to Chemistry 101. Chemistry is the scientific study of the properties and behavior of matter. It is a natural science that covers the elements that make up matter to the compounds composed of atoms, molecules, and ions. Chemistry seeks to understand the properties of matter and how it reacts with other matter."
+        ];
+        const captions3 = [
+            "Introduction to Computer Science: Computer science is the study of computation, automation, and information. It involves the theory of computation, algorithms, data structures, computer and network design, and artificial intelligence. Understanding these concepts is crucial for developing efficient and innovative technological solutions."
+        ];
+        const captions4 = [
+            "Welcome to Biology 101. Biology is the natural science that studies life and living organisms, including their physical structure, chemical processes, molecular interactions, physiological mechanisms, development, and evolution. It is a vast field that encompasses various disciplines such as botany, zoology, microbiology, and genetics."
         ];
 
-        let captionIndex = 0;
-        const captionBox = document.getElementById('captionBox');
+        const containers = document.querySelectorAll('.container');
+        let currentIndex = 0;
 
-        function displayCaption() {
-            if (captionIndex < captions.length) {
+        function displayCaption(captionBox, captions, index) {
+            if (index < captions.length) {
                 const captionText = document.createElement('span');
                 captionText.classList.add('caption-text');
-                captionText.textContent = captions[captionIndex];
+                captionText.textContent = captions[index];
                 captionBox.appendChild(captionText);
                 captionBox.appendChild(document.createElement('br'));
-                captionIndex++;
-                setTimeout(displayCaption, 2000);
+                return setTimeout(() => displayCaption(captionBox, captions, index + 1), 2000);
             }
         }
 
-        displayCaption();
+        function displayFormattedCaption(captionBox, captions, index) {
+            if (index < captions.length) {
+                const captionText = document.createElement('span');
+                captionText.classList.add('caption-text');
+                captionText.innerHTML = captions[index]
+                    .replace(/Chemistry/g, '<strong>Chemistry</strong>')
+                    .replace(/properties/g, '<strong>properties</strong>')
+                    .replace(/matter/g, '<strong>matter</strong>')
+                    .replace(/elements/g, '<strong>elements</strong>')
+                    .replace(/compounds/g, '<strong>compounds</strong>');
+                captionBox.appendChild(captionText);
+                captionBox.appendChild(document.createElement('br'));
+                return setTimeout(() => displayFormattedCaption(captionBox, captions, index + 1), 2000);
+            }
+        }
 
-        // Access the webcam
-        const video = document.getElementById('video');
+        displayCaption(document.getElementById('captionBox1'), captions1, 0);
+        displayFormattedCaption(document.getElementById('captionBox2'), captions2, 0);
+        displayCaption(document.getElementById('captionBox3'), captions3, 0);
+        displayCaption(document.getElementById('captionBox4'), captions4, 0);
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                video.srcObject = stream;
-                video.play();
+                document.getElementById('video2').srcObject = stream;
+                document.getElementById('video2').play();
+                document.getElementById('video3').srcObject = stream;
+                document.getElementById('video3').play();
             });
         }
-
-        const containers = document.querySelectorAll('.container');
-        let currentIndex = 1;
 
         function showPrevious() {
             containers[currentIndex].classList.remove('active');
@@ -138,4 +194,5 @@
     </script>
 </body>
 </html>
+
 
