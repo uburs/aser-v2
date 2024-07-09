@@ -69,10 +69,10 @@
         }
         .caption-overlay {
             position: absolute;
-            bottom: 10%;
+            bottom: 0;
             width: 100%;
             max-height: 40%;
-            overflow-y: auto;
+            overflow-y: hidden;
             padding: 20px;
             text-align: center;
             color: white;
@@ -80,6 +80,9 @@
             border-radius: 10px;
             font-size: 18px;
             line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .navigation {
             position: absolute;
@@ -163,6 +166,7 @@
                         span.textContent = word + ' ';
                         captionBox.appendChild(span);
                         span.style.opacity = 1; // Apply fade-in immediately
+                        captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
                     }, i * 500); // Adjust the speed of the captions here
                 });
                 setTimeout(() => displayCaption(captionBox, text, index + 1), words.length * 500);
@@ -179,6 +183,7 @@
                         span.innerHTML = word.replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + ' ';
                         captionBox.appendChild(span);
                         span.style.opacity = 1; // Apply fade-in immediately
+                        captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
                     }, i * 500); // Adjust the speed of the captions here
                 });
                 setTimeout(() => displayFormattedCaption(captionBox, text, index + 1), words.length * 500);
