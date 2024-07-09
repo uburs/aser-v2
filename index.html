@@ -153,37 +153,42 @@
         const containers = document.querySelectorAll('.container');
         let currentIndex = 0;
 
-        function displayCaption(captionBox, captions, index) {
-            if (index < captions.length) {
-                const captionText = document.createElement('span');
-                captionText.classList.add('caption-text');
-                captionText.textContent = captions[index];
-                captionBox.appendChild(captionText);
-                captionBox.appendChild(document.createElement('br'));
-                return setTimeout(() => displayCaption(captionBox, captions, index + 1), 2000);
+        function displayCaption(captionBox, text, index = 0) {
+            if (index < text.length) {
+                const words = text[index].split(' ');
+                words.forEach((word, i) => {
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.classList.add('caption-text');
+                        span.textContent = word + ' ';
+                        captionBox.appendChild(span);
+                        span.style.opacity = 1; // Apply fade-in immediately
+                    }, i * 500); // Adjust the speed of the captions here
+                });
+                setTimeout(() => displayCaption(captionBox, text, index + 1), words.length * 500);
             }
         }
 
-        function displayFormattedCaption(captionBox, captions, index) {
-            if (index < captions.length) {
-                const captionText = document.createElement('span');
-                captionText.classList.add('caption-text');
-                captionText.innerHTML = captions[index]
-                    .replace(/Chemistry/g, '<strong>Chemistry</strong>')
-                    .replace(/properties/g, '<strong>properties</strong>')
-                    .replace(/matter/g, '<strong>matter</strong>')
-                    .replace(/elements/g, '<strong>elements</strong>')
-                    .replace(/compounds/g, '<strong>compounds</strong>');
-                captionBox.appendChild(captionText);
-                captionBox.appendChild(document.createElement('br'));
-                return setTimeout(() => displayFormattedCaption(captionBox, captions, index + 1), 2000);
+        function displayFormattedCaption(captionBox, text, index = 0) {
+            if (index < text.length) {
+                const words = text[index].split(' ');
+                words.forEach((word, i) => {
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.classList.add('caption-text');
+                        span.innerHTML = word.replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + ' ';
+                        captionBox.appendChild(span);
+                        span.style.opacity = 1; // Apply fade-in immediately
+                    }, i * 500); // Adjust the speed of the captions here
+                });
+                setTimeout(() => displayFormattedCaption(captionBox, text, index + 1), words.length * 500);
             }
         }
 
-        displayCaption(document.getElementById('captionBox1'), captions1, 0);
-        displayFormattedCaption(document.getElementById('captionBox2'), captions2, 0);
-        displayCaption(document.getElementById('captionBox3'), captions3, 0);
-        displayCaption(document.getElementById('captionBox4'), captions4, 0);
+        displayCaption(document.getElementById('captionBox1'), captions1);
+        displayFormattedCaption(document.getElementById('captionBox2'), captions2);
+        displayCaption(document.getElementById('captionBox3'), captions3);
+        displayCaption(document.getElementById('captionBox4'), captions4);
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
