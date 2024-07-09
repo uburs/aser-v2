@@ -84,8 +84,10 @@
             background: transparent; /* Make background transparent */
         }
         .caption-overlay span {
-            width: 100%; /* Ensure text is within the video width */
-            padding: 0 30px; /* Add padding to prevent overflow */
+            display: block; /* Ensure text wraps within the container */
+            white-space: pre-wrap; /* Handle white spaces properly */
+            word-wrap: break-word; /* Break long words to fit the container */
+            padding: 0 10px; /* Add padding to prevent overflow */
             box-sizing: border-box;
         }
         .navigation {
@@ -250,6 +252,5 @@
     </script>
 </body>
 </html>
-
 
 
