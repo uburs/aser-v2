@@ -29,12 +29,11 @@
             display: flex;
         }
         .caption-box {
-            width: 50%;
+            width: 100%;
             padding: 20px;
             overflow-y: auto;
             font-size: 18px;
             line-height: 1.5;
-            border-right: 2px solid #000;
         }
         .video-box {
             width: 50%;
@@ -72,8 +71,8 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            max-height: 40%;
-            overflow-y: hidden;
+            max-height: 100%;
+            overflow: hidden;
             padding: 20px;
             text-align: center;
             color: white;
@@ -195,10 +194,29 @@
             }
         }
 
+        function displayFlowingCaption(captionBox, text) {
+            const captionText = text.join(' ');
+            let scrollPosition = captionBox.offsetHeight;
+
+            const span = document.createElement('span');
+            span.classList.add('caption-text');
+            span.textContent = captionText;
+            captionBox.appendChild(span);
+
+            const scrollInterval = setInterval(() => {
+                scrollPosition -= 1;
+                captionBox.scrollTop = captionBox.scrollHeight - scrollPosition;
+
+                if (scrollPosition <= 0) {
+                    clearInterval(scrollInterval);
+                }
+            }, 50); // Adjust the speed of the scrolling here
+        }
+
         function initializeCaptions() {
             displayCaption(document.getElementById('captionBox1'), captions1);
             displayCaption(document.getElementById('captionBox2'), captions2);
-            displayFormattedCaption(document.getElementById('captionBox3'), captions3);
+            displayFlowingCaption(document.getElementById('captionBox3'), captions3);
             displayCaption(document.getElementById('captionBox4'), captions4);
         }
 
