@@ -156,49 +156,37 @@
         const containers = document.querySelectorAll('.container');
         let currentIndex = 0;
 
-        function displayCaption(captionBox, text, index = 0, chunkSize = 5) {
+        function displayCaption(captionBox, text, index = 0) {
             if (index < text.length) {
                 const words = text[index].split(' ');
-                let chunk = '';
                 words.forEach((word, i) => {
-                    if ((i + 1) % chunkSize === 0) {
-                        setTimeout(() => {
-                            const span = document.createElement('span');
-                            span.classList.add('caption-text');
-                            span.textContent = chunk + word + ' ';
-                            captionBox.appendChild(span);
-                            span.style.opacity = 1; // Apply fade-in immediately
-                            captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
-                        }, i * 100); // Adjust the speed of the captions here
-                        chunk = '';
-                    } else {
-                        chunk += word + ' ';
-                    }
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.classList.add('caption-text');
+                        span.textContent = word + ' ';
+                        captionBox.appendChild(span);
+                        span.style.opacity = 1; // Apply fade-in immediately
+                        captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
+                    }, i * 500); // Adjust the speed of the captions here
                 });
-                setTimeout(() => displayCaption(captionBox, text, index + 1, chunkSize), words.length * 100);
+                setTimeout(() => displayCaption(captionBox, text, index + 1), words.length * 500);
             }
         }
 
-        function displayFormattedCaption(captionBox, text, index = 0, chunkSize = 5) {
+        function displayFormattedCaption(captionBox, text, index = 0) {
             if (index < text.length) {
                 const words = text[index].split(' ');
-                let chunk = '';
                 words.forEach((word, i) => {
-                    if ((i + 1) % chunkSize === 0) {
-                        setTimeout(() => {
-                            const span = document.createElement('span');
-                            span.classList.add('caption-text');
-                            span.innerHTML = chunk + word.replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + ' ';
-                            captionBox.appendChild(span);
-                            span.style.opacity = 1; // Apply fade-in immediately
-                            captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
-                        }, i * 100); // Adjust the speed of the captions here
-                        chunk = '';
-                    } else {
-                        chunk += word + ' ';
-                    }
+                    setTimeout(() => {
+                        const span = document.createElement('span');
+                        span.classList.add('caption-text');
+                        span.innerHTML = word.replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + ' ';
+                        captionBox.appendChild(span);
+                        span.style.opacity = 1; // Apply fade-in immediately
+                        captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
+                    }, i * 500); // Adjust the speed of the captions here
                 });
-                setTimeout(() => displayFormattedCaption(captionBox, text, index + 1, chunkSize), words.length * 100);
+                setTimeout(() => displayFormattedCaption(captionBox, text, index + 1), words.length * 500);
             }
         }
 
