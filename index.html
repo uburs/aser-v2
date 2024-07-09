@@ -52,6 +52,7 @@
             display: inline-block;
             opacity: 0;
             animation: fadeIn 1s forwards;
+            margin-right: 5px;
         }
         @keyframes fadeIn {
             from {
@@ -163,9 +164,8 @@
                     setTimeout(() => {
                         const span = document.createElement('span');
                         span.classList.add('caption-text');
-                        span.textContent = word + ' ';
+                        span.textContent = word;
                         captionBox.appendChild(span);
-                        span.style.opacity = 1; // Apply fade-in immediately
                         captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
                     }, i * 500); // Adjust the speed of the captions here
                 });
@@ -183,12 +183,12 @@
                         setTimeout(() => {
                             const span = document.createElement('span');
                             span.classList.add('caption-text');
-                            span.innerHTML = line.join(' ').replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + '<br>';
+                            span.textContent = line.join(' ');
                             captionBox.appendChild(span);
-                            span.style.opacity = 1; // Apply fade-in immediately
+                            captionBox.appendChild(document.createElement('br'));
                             captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
+                            line = [];
                         }, i * 500); // Adjust the speed of the captions here
-                        line = [];
                     }
                 });
                 setTimeout(() => displayFormattedCaption(captionBox, text, index + 1), words.length * 500);
@@ -196,7 +196,7 @@
         }
 
         displayCaption(document.getElementById('captionBox1'), captions1);
-        displayFormattedCaption(document.getElementById('captionBox2'), captions2);
+        displayCaption(document.getElementById('captionBox2'), captions2);
         displayFormattedCaption(document.getElementById('captionBox3'), captions3);
         displayCaption(document.getElementById('captionBox4'), captions4);
 
