@@ -176,15 +176,20 @@
         function displayFormattedCaption(captionBox, text, index = 0) {
             if (index < text.length) {
                 const words = text[index].split(' ');
+                let line = [];
                 words.forEach((word, i) => {
-                    setTimeout(() => {
-                        const span = document.createElement('span');
-                        span.classList.add('caption-text');
-                        span.innerHTML = word.replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + ' ';
-                        captionBox.appendChild(span);
-                        span.style.opacity = 1; // Apply fade-in immediately
-                        captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
-                    }, i * 500); // Adjust the speed of the captions here
+                    line.push(word);
+                    if (line.length >= 5 || i === words.length - 1) {
+                        setTimeout(() => {
+                            const span = document.createElement('span');
+                            span.classList.add('caption-text');
+                            span.innerHTML = line.join(' ').replace(/Chemistry|properties|matter|elements|compounds/gi, (match) => `<strong>${match}</strong>`) + '<br>';
+                            captionBox.appendChild(span);
+                            span.style.opacity = 1; // Apply fade-in immediately
+                            captionBox.scrollTop = captionBox.scrollHeight; // Scroll to bottom
+                        }, i * 500); // Adjust the speed of the captions here
+                        line = [];
+                    }
                 });
                 setTimeout(() => displayFormattedCaption(captionBox, text, index + 1), words.length * 500);
             }
@@ -192,7 +197,7 @@
 
         displayCaption(document.getElementById('captionBox1'), captions1);
         displayFormattedCaption(document.getElementById('captionBox2'), captions2);
-        displayCaption(document.getElementById('captionBox3'), captions3);
+        displayFormattedCaption(document.getElementById('captionBox3'), captions3);
         displayCaption(document.getElementById('captionBox4'), captions4);
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
