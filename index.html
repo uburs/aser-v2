@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Captioning Prototypes</title>
+    <title>Real-Time Captioning and Video Prototype</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -15,41 +15,27 @@
             margin: 0;
         }
         .container {
-            display: none;
-            position: relative;
+            display: flex;
             width: 90%;
             height: 80%;
             border: 2px solid #000;
             border-radius: 10px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .active {
-            display: block;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .caption-box, .caption-overlay {
-            padding: 20px;
-            font-size: 18px;
-            line-height: 1.5;
         }
         .caption-box {
             width: 50%;
-            border-right: 2px solid #000;
+            padding: 20px;
             overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.5;
+            border-right: 2px solid #000;
         }
-        .caption-overlay {
-            position: absolute;
-            bottom: 10%;
-            width: 100%;
-            text-align: center;
-            color: white;
-            background: rgba(0, 0, 0, 0.5);
+        .video-box {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .caption-text {
             display: inline-block;
@@ -63,6 +49,12 @@
             to {
                 opacity: 1;
             }
+        }
+        video {
+            width: 90%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .navigation {
             position: absolute;
@@ -79,23 +71,12 @@
     </style>
 </head>
 <body>
-    <div id="prototype1" class="container active">
-        <div class="caption-box" id="captionBox1">
+    <div class="container">
+        <div class="caption-box" id="captionBox">
             <!-- Captions will appear here -->
         </div>
-    </div>
-
-    <div id="prototype2" class="container">
-        <div class="caption-box" id="captionBox2">
-            <!-- Captions will appear here -->
-        </div>
-        <video id="video2" autoplay></video>
-    </div>
-
-    <div id="prototype3" class="container">
-        <video id="video3" autoplay muted></video>
-        <div class="caption-overlay" id="captionBox3">
-            <!-- Captions will appear here -->
+        <div class="video-box">
+            <video id="video" autoplay></video>
         </div>
     </div>
 
@@ -113,41 +94,35 @@
             "Thank you for your attention. 🙏"
         ];
 
-        let captionIndex1 = 0;
-        let captionIndex2 = 0;
-        let captionIndex3 = 0;
-        let currentIndex = 0;
-        const containers = document.querySelectorAll('.container');
-        const captionBox1 = document.getElementById('captionBox1');
-        const captionBox2 = document.getElementById('captionBox2');
-        const captionBox3 = document.getElementById('captionBox3');
-        const video2 = document.getElementById('video2');
-        const video3 = document.getElementById('video3');
+        let captionIndex = 0;
+        const captionBox = document.getElementById('captionBox');
 
-        function displayCaption(captionBox, index) {
-            if (index < captions.length) {
+        function displayCaption() {
+            if (captionIndex < captions.length) {
                 const captionText = document.createElement('span');
                 captionText.classList.add('caption-text');
-                captionText.textContent = captions[index];
+                captionText.textContent = captions[captionIndex];
                 captionBox.appendChild(captionText);
                 captionBox.appendChild(document.createElement('br'));
-                index++;
-                return setTimeout(() => displayCaption(captionBox, index), 2000);
+                captionIndex++;
+                setTimeout(displayCaption, 2000);
             }
         }
 
-        displayCaption(captionBox1, captionIndex1);
-        displayCaption(captionBox2, captionIndex2);
-        displayCaption(captionBox3, captionIndex3);
+        displayCaption();
+
+        // Access the webcam
+        const video = document.getElementById('video');
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                video2.srcObject = stream;
-                video2.play();
-                video3.srcObject = stream;
-                video3.play();
+                video.srcObject = stream;
+                video.play();
             });
         }
+
+        const containers = document.querySelectorAll('.container');
+        let currentIndex = 1;
 
         function showPrevious() {
             containers[currentIndex].classList.remove('active');
@@ -163,3 +138,4 @@
     </script>
 </body>
 </html>
+
